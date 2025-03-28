@@ -117,6 +117,29 @@
 
       document.body.appendChild(script);
 
+      // Escutador de mensagens postMessage
+window.addEventListener('message', function(event) {
+    // Verifique se a mensagem vem da origem esperada
+    if (event.origin !== "https://lucasrb7.github.io/ChangeTexture/") { // Substitua com a origem do seu site
+        console.error("Origem não permitida: " + event.origin);
+        return;
+    }
+
+    // Dados enviados do site
+    var data = event.data;
+
+    if (data.type === 'changeTexture' && data.url) {
+        console.log("Recebido URL da textura: ", data.url);
+        // Enviar para Unity para alterar a textura
+        if (unityInstance) {
+            unityInstance.SendMessage('MyGame', 'ChangeTexture', data.url);
+        } else {
+            console.error("unityInstance não está disponível.");
+        }
+    }
+});
+
+
     </script>
   </body>
 </html>
